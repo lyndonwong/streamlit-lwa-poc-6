@@ -1,5 +1,5 @@
-# LWA POC 4 2025-08-11
-# Pursues code changes to connect streamlit LWA POC app to Palo Alto CA planning commission data.
+# LWA POC 6 2025-09-08
+# Pursues code changes to connect streamlit LWA POC app to Menlo Park City Council data.
 
 import streamlit as st
 import pandas as pd
@@ -19,7 +19,7 @@ import altair as alt
 st.set_page_config(layout="wide")
 st.logo("images/LWA-v2-square.png", size="large")    
 st.image("images/LWA-demo-lab-bar.png", use_container_width=True )
-st.title("Look Now: The Menlo Park Planning Commission")
+st.title("Look: The Menlo Park City Council")
 
 # decorative image of the town
 st.image("images/Menlo_Park_960px.jpg", use_container_width=True)
@@ -28,8 +28,8 @@ st.image("images/Menlo_Park_960px.jpg", use_container_width=True)
 # [2025-08-25] TO DO: should modify to scan external .md file for this content, instead of hardcoding
 # [2025-09-01] Copied and lightly edited MPPC summary from LLM response
 st.markdown('''
-            ##### Overview of Commission meetings 1H 2025: 
-The Menlo Park Planning Commission focused meetings in 1H 2025 on **various development projects within the city**, including discussions on **single-family homes, accessory dwelling units (ADUs), affordable housing initiatives, and larger mixed-use developments**. Recurring themes include **navigating zoning ordinances, addressing community concerns about traffic, environmental impacts, and design aesthetics, and ensuring compliance with state-mandated housing goals**. The commissions also consider **variances, use permits, and the implementation of the city's Housing Element and Environmental Justice Element**.
+            ##### Overview of Council meetings 1H 2025:
+            A prominent theme across Menlo Park's City Council meetings is **housing development**, particularly the controversial proposal for **affordable housing on downtown parking lots**, which elicits significant public comment both in favor and opposition due to concerns about parking, business impact, and alternative sites like the Civic Center. Additionally, the council actively discusses **environmental and infrastructure issues**, including **climate action, flood control projects like Safer Bay, and updates to the Bayfront Recycled Water Facility**. **Fiscal matters, such as budget adoption, capital improvement plans, and aquatic center funding**, are also recurring topics, reflecting the city's financial planning and resource allocation. Finally, **transportation and community engagement** are consistently addressed, highlighting discussions around **safe routes, bike lanes, and the role of advisory bodies** like the Youth Advisory Committee. 
             ''')
 
 # SUMMARY VISUALIZATIONS ON TOPICS, PROJECTS, COMMISSIONERS
@@ -38,11 +38,11 @@ The Menlo Park Planning Commission focused meetings in 1H 2025 on **various deve
 # BAR CHART WITH Meeting Highlights for 1H 2025
 st.subheader("Meeting Highlights", anchor="meeting-highlights")
 
-chart_df = pd.read_csv('mppc_highlights_2025-08-28_v4_fix-bullets.csv')
+chart_df = pd.read_csv('mpcc_topics_2025-09-06_v2_with_youtube_links.csv')
 chart_df["Date"] = pd.to_datetime(chart_df["Date"])
-chart_df["Duration (min)"] = pd.to_numeric(chart_df["Length (min)"], errors='coerce')
+chart_df["Duration (min)"] = pd.to_numeric(chart_df["Length_Minutes"], errors='coerce')
 chart_df["Topic Count"] = chart_df["Topic_Count"]
-chart_df["Topics"] = chart_df["Topics_Discussed"]
+chart_df["Topics"] = chart_df["Major_Topics"]
 chart_df["Youtube link"] = chart_df["youtube-link"]
 
 # DEPRECATED simple streamlit bar chart since this does not support clickable link
@@ -55,7 +55,7 @@ mtg_chart = alt.Chart(chart_df).mark_bar().encode(
     y= 'Duration (min)',
     color=alt.value('#A9CCE3'),
     # href='youtube-link',  DEPRECATED for ux reasons
-    tooltip=['Date', 'Duration (min)', 'Topic Count', 'Topics_Discussed'] # removed "'Youtube link' from list"
+    tooltip=['Date', 'Duration (min)', 'Topic Count', 'Major_Topics'] # removed "'Youtube link' from list"
 ).properties(title="Rollover any bar for meeting highlights by date")
 
 st.altair_chart(mtg_chart, use_container_width=True)
@@ -72,9 +72,9 @@ st.markdown("[CLICK HERE FOR DETAILS on each project](#project-details)")
 # Ensure the CSV file 'MPPC_projects_1H2025_2025-08-06_map_source.csv' is available in the environment.
 try:
     # Using the exact filename provided by the user
-    df = pd.read_csv("mppc_projects_2025-08-28_v2_geocodio_20250901v2_fixes.csv")
+    df = pd.read_csv("mpcc_projects_2025-09-08_geocoded_fixed.csv")
 except FileNotFoundError:
-    st.error("Error: The CSV file 'mppc_projects_2025-08-28_v2_geocodio_20250901v2_fixes' was not found.")
+    st.error("Error: The CSV file 'mpcc_projects_2025-09-08_geocoded_fixed' was not found.")
     st.stop()
 
 # --- Data Preprocessing and Handling Missing Values ---
@@ -82,12 +82,12 @@ except FileNotFoundError:
 # Rename columns for easier access (optional, but good practice)
 df.rename(columns={
     'project_name': 'project',
-    'Geocodio Latitude': 'latitude',
-    'Geocodio Longitude': 'longitude',
+    'latitude': 'latitude',
+    'longitude': 'longitude',
     'street_address': 'address',
     'city': 'city',
     'project_description': 'description',
-    # 'URL': 'url', # 2025-08-06 DEPRECATE until CSV appended
+    'project_url': 'url', 
     'first_mention_date': 'earliest_mention_date', # Renamed
     'last_mention_date': 'latest_mention_date'    # Renamed
 }, inplace=True)
@@ -218,7 +218,7 @@ if st.checkbox("Show instructions for interactive map"):
 
 # COMMISSIONER STANCES AND POSITIONS
 # Commissioners policy stances data frame
-stances_df = pd.read_csv('mppc_stances_2025-09-04_v2.csv')
+stances_df = pd.read_csv('mpcc_stances_2025-09-08.csv')
 
 # --- Add this CSS style block to force text color to black ---
 st.markdown("""
@@ -231,14 +231,14 @@ st.markdown("""
 # --- End of CSS block ---
 
 # Commissioner Stances heatgrid
-st.subheader("Commissioner Stances", anchor="commissioner-stances-heatgrid")
-st.markdown("[CLICK HERE for Commissioners' Specific Positions](#commissioner-specific-positions)")
+st.subheader("Council Member Stances", anchor="commissioner-stances-heatgrid")
+st.markdown("[CLICK HERE for Council Members' Specific Positions](#commissioner-specific-positions)")
 
 # Detect current theme: "light" or "dark"
 theme_type = st.context.theme.type
 
 # display stances columns using st.dataframe for horizontal scrolling
-stances_summary_df = stances_df.drop(columns=['Positions'])
+stances_summary_df = stances_df.drop(columns=['Key Positions'])
 # add color-coding on stances (pro, neutral, opposed or mixed)
 
 # DEPRECATED v1 palette
@@ -339,7 +339,7 @@ st.subheader("Meeting Details", anchor="meeting-details")
 st.markdown("[CLICK HERE for Meeting Highlights](#meeting-highlights)")
 
 # List of columns you want to display
-selected_columns = ['Date', 'Length (min)', 'Topic Count', 'Topics', 'Youtube link']
+selected_columns = ['Date', 'Duration (min)', 'Topic Count', 'Topics', 'Youtube link']
 # Create a new DataFrame with only the selected columns
 df_to_display = chart_df[selected_columns]
 
@@ -362,9 +362,9 @@ st.table(df[columns_to_show])
 
 # COMMISSIONER SPECIFIC POSITIONS
 # display subset of columns using st.table for bulleted list in cells
-st.subheader("Commissioner Specific Positions", anchor="commissioner-specific-positions")
-st.markdown("[CLICK HERE for Commissioner Stances at a glance](#commissioner-stances-heatgrid)")
-positions_view = ['Commissioner name', 'Positions']
+st.subheader("Councillor Specific Positions", anchor="commissioner-specific-positions")
+st.markdown("[CLICK HERE for Councillor Stances at a glance](#commissioner-stances-heatgrid)")
+positions_view = ['Council Member', 'Key Positions']
 positions_list_df = stances_df[positions_view]
 st.table(positions_list_df)
 

@@ -20,7 +20,7 @@ import altair as alt
 
 st.set_page_config(layout="wide")
 st.logo("images/LWA-v2-square.png", size="large")    
-st.image("images/LWA-demo-lab-bar.png", use_container_width=True )
+st.image("images/LWA_demolab_1920x360px.png", use_container_width=True )
 st.title("Look: The Menlo Park City Council")
 
 # decorative image of the town
@@ -312,18 +312,18 @@ tab_homeowners, tab_renters, tab_investors = st.tabs(["For Homeowners", "For Ren
 
 with tab_homeowners:
     st.subheader("For Homeowners")
-    st.write("A 7-minute video on how 1H 2025 Planning Commission activity may affect homeowners.")
-    st_player("https://player.vimeo.com/video/1115593872")
+    st.write("A 7-minute video on how 1H 2025 City Council activity may affect homeowners.")
+    st_player("https://player.vimeo.com/video/1117583808")
 
 with tab_renters:
     st.subheader("For Renters")
-    st.write("A 7-minute video on how 1H 2025 Planning Commission activity may affect renters.")
-    st_player("https://player.vimeo.com/video/1115619286")
+    st.write("A 7-minute video on how 1H 2025 City Council activity may affect renters.")
+    st_player("https://player.vimeo.com/video/1117597380")
 
 with tab_investors:
     st.subheader("For Investors")
-    st.write("A 7-minute video on how 1H 2025 Planning Commission activity may affect investors.")
-    st_player("https://player.vimeo.com/video/1115584343")
+    st.write("A 7-minute video on how 1H 2025 City Council activity may affect investors.")
+    st_player("https://player.vimeo.com/video/1117612952")
 
 # DEPRECATED 8/8/2025
 # Somewhat redundant with explainer video. Also a big in the audio file prevents playback

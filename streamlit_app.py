@@ -5,6 +5,8 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
+# add pin clustering
+from folium.plugins import MarkerCluster
 # add audio stream support
 import io
 # add video stream support
@@ -62,8 +64,8 @@ st.altair_chart(mtg_chart, use_container_width=True)
 
 st.markdown("[CLICK HERE for Meeting Details](#meeting-details)")
 
-# PLANNING PROJECTS
-# INTERACTIVE MAP of projects presented to the Planning Commmission
+# PROJECT MAP
+# INTERACTIVE MAP of projects discussed
 st.subheader("Project Map", anchor="project-map")
 st.write("Hover over the pins to see detailed project information. Click on a pin for a popup and to see the project name below.")
 st.markdown("[CLICK HERE FOR DETAILS on each project](#project-details)")
@@ -123,7 +125,10 @@ else:
 map_height = 800  # Set the height of the map
 m = folium.Map(location=map_center, zoom_start=13, height=map_height, control_scale=True)
 
-# Add markers for each location
+# Create a MarkerCluster object
+marker_cluster = MarkerCluster().add_to(m) # <--- Create the cluster layer
+
+# Add markers for each location -> TO THE CLUSTER 2025-09-10
 for idx, row in df.iterrows():
     project_name = row.get('project', 'N/A')
     project_description = row.get('description', 'No description available.')
@@ -173,7 +178,7 @@ for idx, row in df.iterrows():
         tooltip=folium.Tooltip(tooltip_html, sticky=True, max_width=400),
         popup=folium.Popup(popup_html, max_width=300),
         icon=folium.Icon(color='green', icon='info-sign') # Changed icon color and type for San Carlos projects
-    ).add_to(m)
+    ).add_to(marker_cluster) # <-- 2025-09-10 Change this from .add_to(m)
 
 # Display the map in Streamlit
 # Add st.container and key to st_folium to control rendering

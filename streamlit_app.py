@@ -41,7 +41,7 @@ st.markdown('''
 st.subheader("Meeting Highlights", anchor="meeting-highlights")
 
 chart_df = pd.read_csv('mpcc_topics_2025-09-06_v2_with_youtube_links.csv')
-chart_df["Date"] = pd.to_datetime(chart_df["Date"])
+chart_df["Date"] = pd.to_datetime(chart_df["Date"]).dt.strftime('%Y-%m-%d')
 chart_df["Duration (min)"] = pd.to_numeric(chart_df["Length_Minutes"], errors='coerce')
 chart_df["Topic Count"] = chart_df["Topic_Count"]
 chart_df["Topics"] = chart_df["Major_Topics"]
@@ -341,21 +341,23 @@ with tab_investors:
 
 # Meeting Details table
 st.subheader("Meeting Details", anchor="meeting-details")
-st.markdown("[CLICK HERE for Meeting Highlights](#meeting-highlights)")
 
 # List of columns you want to display
-selected_columns = ['Date', 'Duration (min)', 'Topic Count', 'Topics', 'Youtube link']
+selected_columns = ['Date', 'Topics', 'Youtube link']
 # Create a new DataFrame with only the selected columns
 df_to_display = chart_df[selected_columns]
 
 # DEPRECATED 2025-08-16
 # st.dataframe(df_to_display) 
 # use st.table instead, to render markdown in table cells
-st.table(df_to_display)
 
-# Show table of Key Projects
+if st.checkbox("Show Meeting Details"):
+    st.table(df_to_display)
+
+st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
+
+# Key Projects table
 st.subheader("Project Details", anchor="project-details")
-st.markdown("[CLICK HERE for Project Map](#project-map)")
 
 #columns_to_show = ['Project', 'Address', 'Description', 'First Mention', 'Last Mention']
 # columns_to_show = ['project', 'address', 'description', 'earliest_mention_date', 'latest_mention_date', 'url'] #need to remove url column for now 9/2/2025.
@@ -363,15 +365,22 @@ columns_to_show = ['project', 'address', 'description', 'earliest_mention_date',
 
 # st.dataframe(df) # DEPRECATED 2025-08-16
 # use st.table instead, to show multi-row description field
-st.table(df[columns_to_show])
+if st.checkbox("Show Project Details"):
+    st.table(df[columns_to_show])
+
+st.markdown("[RETURN to Project Map](#project-map)")
 
 # COMMISSIONER SPECIFIC POSITIONS
 # display subset of columns using st.table for bulleted list in cells
-st.subheader("Councillor Specific Positions", anchor="commissioner-specific-positions")
-st.markdown("[CLICK HERE for Councillor Stances at a glance](#commissioner-stances-heatgrid)")
+st.subheader("Key Positions", anchor="commissioner-specific-positions")
+
 positions_view = ['Council Member', 'Key Positions']
 positions_list_df = stances_df[positions_view]
-st.table(positions_list_df)
+
+if st.checkbox("Show Specific Positions by Council Member"):
+    st.table(positions_list_df)
+
+st.markdown("[RETURN to Council Member Stances overview](#commissioner-stances-heatgrid)")
 
 # DEPRECATED - replaced by above 2 separate tables
 # display all columns using st.dataframe for horizontal scrolling

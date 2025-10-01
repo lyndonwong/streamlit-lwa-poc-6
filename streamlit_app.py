@@ -20,8 +20,8 @@ import altair as alt
 
 st.set_page_config(layout="wide")
 st.logo("images/LWA-v2-square.png", size="large")    
-st.image("images/LWA_demolab_1920x360px.png", use_container_width=True )
-st.title("Look: The Menlo Park City Council")
+# st.image("images/LWA_demolab_1920x360px.png", use_container_width=True )
+st.title("Menlo Park City Council Recap")
 
 # decorative image of the town
 st.image("images/Menlo_Park_960px.jpg", use_container_width=True)

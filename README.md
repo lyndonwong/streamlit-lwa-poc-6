@@ -2,7 +2,7 @@
 
 ## Overview
 
-This web app helps stakeholders explore and understand the activities of the Menlo Park City Council. It visualizes data from council meetings in the first half of 2025, making it easy to see meeting highlights, track planning projects, and understand the stances of council members on key issues.
+This streamlit app helps stakeholders explore and understand the activities of the Menlo Park City Council. It visualizes data from council meetings in the first half of 2025, making it easy to see meeting highlights, track planning projects, and understand the stances of council members on key issues.
 
 This application is a great learning resource for beginners interested in Python, data visualization, and the Streamlit framework.
 

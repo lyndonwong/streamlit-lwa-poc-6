@@ -51,7 +51,7 @@ def submit_feedback_widget(context_label):
         except Exception as e:
             st.session_state[submitted_key] = f"Error: {e}"
 
-    with st.expander("💬 Please rate this " + context_label, expanded=True):
+    with st.expander("💬 Please rate this " + context_label, expanded=False):
         st.feedback("stars", key=rating_key)
         st.text_area(
             "How could we improve it?", 

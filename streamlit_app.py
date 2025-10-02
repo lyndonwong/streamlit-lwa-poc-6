@@ -13,6 +13,75 @@ import io
 from streamlit_player import st_player
 # add altair charting
 import altair as alt
+import requests
+
+# FUNCTIONS
+
+# Generalized function for user feedback on app features
+def submit_feedback_widget(context_label):
+    """Reusable feedback widget that clears itself after submission."""
+    
+    # Define keys for session state
+    rating_key = f"rating_{context_label}"
+    feedback_key = f"feedback_{context_label}"
+    submitted_key = f"submitted_{context_label}"
+
+    # The callback function to handle the form submission
+    def handle_submission():
+        # Retrieve values from session state
+        rating_value = st.session_state[rating_key]
+        feedback_value = st.session_state[feedback_key]
+        
+        form_url = "https://docs.google.com/forms/d/e/1FAIpQLSfpNBurxpNOKliavTR5l8b-QABvXrD7dH-wlaWRCNGYWkGGGg/formResponse"
+        form_data = {
+            "entry.407434206": context_label,
+            "entry.1395096716": str(rating_value + 1), # Convert 0-4 to 1-5 string
+            "entry.1507719363": feedback_value if feedback_value else "No additional comments"
+        }
+        
+        try:
+            response = requests.post(form_url, data=form_data, timeout=5)
+            if response.ok:
+                st.session_state[submitted_key] = True # Set a flag for success
+                # --- FIX: Clear the widgets by resetting their session state values ---
+                st.session_state[rating_key] = None 
+                st.session_state[feedback_key] = ""
+            else:
+                st.session_state[submitted_key] = f"Error: {response.status_code}"
+        except Exception as e:
+            st.session_state[submitted_key] = f"Error: {e}"
+
+    with st.expander("💬 Please rate this " + context_label, expanded=True):
+        st.feedback("stars", key=rating_key)
+        st.text_area(
+            "How could we improve it?", 
+            key=feedback_key,
+            placeholder="Optional: Share specific suggestions..."
+        )
+        
+        # Disable the button if no rating is selected
+        is_disabled = st.session_state.get(rating_key) is None
+        
+        st.button(
+            "Submit Feedback", 
+            key=f"submit_{context_label}", 
+            on_click=handle_submission,
+            disabled=is_disabled
+        )
+
+        if is_disabled and st.session_state.get(f'button_clicked_{context_label}', False):
+             st.warning("⭐ Please select a star rating before submitting.")
+
+    # Display submission status outside the expander, based on the session state flag
+    if submitted_key in st.session_state:
+        result = st.session_state[submitted_key]
+        if result is True:
+            st.success("✅ Thank you for your feedback!")
+        else:
+            st.error(f"❌ Submission failed. {result}")
+        # Clean up the flag so the message disappears on the next interaction
+        del st.session_state[submitted_key]
+
 
 # DEPRECATE for this test
 # # Bypass streamlit_folium component, which has bug that causes empty space at bottom of map
@@ -221,6 +290,11 @@ if st.checkbox("Show instructions for interactive map"):
     - [CLICK HERE FOR DETAILS on each project](#project-details)        
     """)
 
+
+
+# Feedback on interactive map feature
+submit_feedback_widget("project_map")
+
 # COMMISSIONER STANCES AND POSITIONS
 # Commissioners policy stances data frame
 stances_df = pd.read_csv('mpcc_stances_2025-09-08.csv')
@@ -235,9 +309,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 # --- End of CSS block ---
 
-# Commissioner Stances heatgrid
-st.subheader("Council Member Stances", anchor="commissioner-stances-heatgrid")
-st.markdown("[CLICK HERE for Council Members' Specific Positions](#commissioner-specific-positions)")
+# Commissioner Stances Overview
+st.subheader("Stances Overview", anchor="commissioner-stances-heatgrid")
+st.markdown("[CLICK HERE for Council Members' Specific Stances](#commissioner-specific-positions)")
 
 # Detect current theme: "light" or "dark"
 theme_type = st.context.theme.type
@@ -299,6 +373,9 @@ def highlight_stances(val):
 styled_stances_df = stances_summary_df.style.applymap(highlight_stances)
 st.dataframe(styled_stances_df)
 
+# Feedback on council member stances feature
+submit_feedback_widget("stances_overview")
+
 # ANALYSES FROM VARIOUS PERSPECTIVES
 st.header("Interpretations")
 
@@ -324,6 +401,9 @@ with tab_investors:
     st.subheader("For Investors")
     st.write("A 7-minute video on how 1H 2025 City Council activity may affect investors.")
     st_player("https://player.vimeo.com/video/1117612952")
+
+# Feedback on interpretive videos feature
+submit_feedback_widget("interpretive_videos")
 
 # DEPRECATED 8/8/2025
 # Somewhat redundant with explainer video. Also a big in the audio file prevents playback
@@ -372,12 +452,12 @@ st.markdown("[RETURN to Project Map](#project-map)")
 
 # COMMISSIONER SPECIFIC POSITIONS
 # display subset of columns using st.table for bulleted list in cells
-st.subheader("Key Positions", anchor="commissioner-specific-positions")
+st.subheader("Stances Details", anchor="commissioner-specific-positions")
 
 positions_view = ['Council Member', 'Key Positions']
 positions_list_df = stances_df[positions_view]
 
-if st.checkbox("Show Specific Positions by Council Member"):
+if st.checkbox("Show Key Stances of each Council Member"):
     st.table(positions_list_df)
 
 st.markdown("[RETURN to Council Member Stances overview](#commissioner-stances-heatgrid)")
@@ -402,3 +482,8 @@ st.markdown("[RETURN to Council Member Stances overview](#commissioner-stances-h
 # # Display the markdown content in Streamlit, with user control to show/hide
 # if st.checkbox("See Planning Commission 1H 2025 Activity Details"):
 #     st.markdown(markdown_content)
+
+# General Feedback
+st.divider()
+st.subheader("Please share your feedback")
+submit_feedback_widget("overall_experience")

@@ -93,7 +93,7 @@ st.logo("images/LWA-v2-square.png", size="large")
 st.title("Menlo Park City Council Recap")
 
 # decorative image of the town
-st.image("images/Menlo_Park_960px.jpg", use_container_width=True)
+# st.image("images/Menlo_Park_960px.jpg", use_container_width=True) # TBD replace with high-level metrics or other value-add analytic summary
 
 # Short overview
 # [2025-08-25] TO DO: should modify to scan external .md file for this content, instead of hardcoding
@@ -103,35 +103,37 @@ st.markdown('''
             A prominent theme across Menlo Park's City Council meetings is **housing development**, particularly the controversial proposal for **affordable housing on downtown parking lots**, which elicits significant public comment both in favor and opposition due to concerns about parking, business impact, and alternative sites like the Civic Center. Additionally, the council actively discusses **environmental and infrastructure issues**, including **climate action, flood control projects like Safer Bay, and updates to the Bayfront Recycled Water Facility**. **Fiscal matters, such as budget adoption, capital improvement plans, and aquatic center funding**, are also recurring topics, reflecting the city's financial planning and resource allocation. Finally, **transportation and community engagement** are consistently addressed, highlighting discussions around **safe routes, bike lanes, and the role of advisory bodies** like the Youth Advisory Committee. 
             ''')
 
+# ANALYSES FROM VARIOUS PERSPECTIVES
+st.header("Interpretations")
+
+# # Explainer video
+# st.subheader("The Explainer")
+# st.write("Your 7 minute video on Palo Alto's real estate investment climate in mid 2025.")
+# st_player("https://player.vimeo.com/video/1109170740")
+
+# Select explainers via tabs
+tab_homeowners, tab_renters, tab_investors = st.tabs(["For Homeowners", "For Renters", "For Investors"])
+
+with tab_homeowners:
+    st.subheader("For Homeowners")
+    st.write("A 7-minute video on how 1H 2025 City Council activity may affect homeowners.")
+    st_player("https://player.vimeo.com/video/1117583808")
+
+with tab_renters:
+    st.subheader("For Renters")
+    st.write("A 7-minute video on how 1H 2025 City Council activity may affect renters.")
+    st_player("https://player.vimeo.com/video/1117597380")
+
+with tab_investors:
+    st.subheader("For Investors")
+    st.write("A 7-minute video on how 1H 2025 City Council activity may affect investors.")
+    st_player("https://player.vimeo.com/video/1117612952")
+
+# Feedback on interpretive videos feature
+submit_feedback_widget("interpretive_videos")
+
 # SUMMARY VISUALIZATIONS ON TOPICS, PROJECTS, COMMISSIONERS
 
-# MEETING HIGHLIGHTS
-# BAR CHART WITH Meeting Highlights for 1H 2025
-st.subheader("Meeting Highlights", anchor="meeting-highlights")
-
-chart_df = pd.read_csv('mpcc_topics_2025-09-06_v2_with_youtube_links.csv')
-chart_df["Date"] = pd.to_datetime(chart_df["Date"]).dt.strftime('%Y-%m-%d')
-chart_df["Duration (min)"] = pd.to_numeric(chart_df["Length_Minutes"], errors='coerce')
-chart_df["Topic Count"] = chart_df["Topic_Count"]
-chart_df["Topics"] = chart_df["Major_Topics"]
-chart_df["Youtube link"] = chart_df["youtube-link"]
-
-# DEPRECATED simple streamlit bar chart since this does not support clickable link
-# # basic streamlit bar_chart
-# st.bar_chart(chart_df, x="date", y="duration", use_container_width=True) 
-
-# ADDED enhanced altair interactive chart
-mtg_chart = alt.Chart(chart_df).mark_bar().encode(
-    x='Date',
-    y= 'Duration (min)',
-    color=alt.value('#A9CCE3'),
-    # href='youtube-link',  DEPRECATED for ux reasons
-    tooltip=['Date', 'Duration (min)', 'Topic Count', 'Major_Topics'] # removed "'Youtube link' from list"
-).properties(title="Rollover any bar for meeting highlights by date")
-
-st.altair_chart(mtg_chart, use_container_width=True)
-
-st.markdown("[CLICK HERE for Meeting Details](#meeting-details)")
 
 # PROJECT MAP
 # INTERACTIVE MAP of projects discussed
@@ -376,37 +378,38 @@ st.dataframe(styled_stances_df)
 # Feedback on council member stances feature
 submit_feedback_widget("stances_overview")
 
-# ANALYSES FROM VARIOUS PERSPECTIVES
-st.header("Interpretations")
+# MEETING HIGHLIGHTS
+# BAR CHART WITH Meeting Highlights for 1H 2025
+st.subheader("Meeting Highlights", anchor="meeting-highlights")
 
-# # Explainer video
-# st.subheader("The Explainer")
-# st.write("Your 7 minute video on Palo Alto's real estate investment climate in mid 2025.")
-# st_player("https://player.vimeo.com/video/1109170740")
+chart_df = pd.read_csv('mpcc_topics_2025-09-06_v2_with_youtube_links.csv')
+chart_df["Date"] = pd.to_datetime(chart_df["Date"]).dt.strftime('%Y-%m-%d')
+chart_df["Duration (min)"] = pd.to_numeric(chart_df["Length_Minutes"], errors='coerce')
+chart_df["Topic Count"] = chart_df["Topic_Count"]
+chart_df["Topics"] = chart_df["Major_Topics"]
+chart_df["Youtube link"] = chart_df["youtube-link"]
 
-# Select explainers via tabs
-tab_homeowners, tab_renters, tab_investors = st.tabs(["For Homeowners", "For Renters", "For Investors"])
+# DEPRECATED simple streamlit bar chart since this does not support clickable link
+# # basic streamlit bar_chart
+# st.bar_chart(chart_df, x="date", y="duration", use_container_width=True) 
 
-with tab_homeowners:
-    st.subheader("For Homeowners")
-    st.write("A 7-minute video on how 1H 2025 City Council activity may affect homeowners.")
-    st_player("https://player.vimeo.com/video/1117583808")
+# ADDED enhanced altair interactive chart
+mtg_chart = alt.Chart(chart_df).mark_bar().encode(
+    x='Date',
+    y= 'Duration (min)',
+    color=alt.value('#A9CCE3'),
+    # href='youtube-link',  DEPRECATED for ux reasons
+    tooltip=['Date', 'Duration (min)', 'Topic Count', 'Major_Topics'] # removed "'Youtube link' from list"
+).properties(title="Rollover any bar for meeting highlights by date")
 
-with tab_renters:
-    st.subheader("For Renters")
-    st.write("A 7-minute video on how 1H 2025 City Council activity may affect renters.")
-    st_player("https://player.vimeo.com/video/1117597380")
+st.altair_chart(mtg_chart, use_container_width=True)
 
-with tab_investors:
-    st.subheader("For Investors")
-    st.write("A 7-minute video on how 1H 2025 City Council activity may affect investors.")
-    st_player("https://player.vimeo.com/video/1117612952")
+st.markdown("[CLICK HERE for Meeting Details](#meeting-details)")
 
-# Feedback on interpretive videos feature
-submit_feedback_widget("interpretive_videos")
+
 
 # DEPRECATED 8/8/2025
-# Somewhat redundant with explainer video. Also a big in the audio file prevents playback
+# Somewhat redundant with explainer video. Also a bug in the audio file prevents playback
 # # Podcast player
 # st.subheader("Deep Dive - July 2025 Podcast")
 # st.write("Your 5 minute podcast on the big themes and impacts of Menlo Park planning commission actions in 1H 2025")
@@ -418,23 +421,6 @@ submit_feedback_widget("interpretive_videos")
 #     st.error("Error: The audio file 'MPPC_podcast_source.m4a' was not found. Please ensure the file is in the correct directory.")  
 
 # INFORMATION TABLES WITH MORE DETAILS ON TOPICS, PROJECTS AND COMMISSIONERS
-
-# Meeting Details table
-st.subheader("Meeting Details", anchor="meeting-details")
-
-# List of columns you want to display
-selected_columns = ['Date', 'Topics', 'Youtube link']
-# Create a new DataFrame with only the selected columns
-df_to_display = chart_df[selected_columns]
-
-# DEPRECATED 2025-08-16
-# st.dataframe(df_to_display) 
-# use st.table instead, to render markdown in table cells
-
-if st.checkbox("Show Meeting Details"):
-    st.table(df_to_display)
-
-st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
 
 # Key Projects table
 st.subheader("Project Details", anchor="project-details")
@@ -462,10 +448,26 @@ if st.checkbox("Show Key Stances of each Council Member"):
 
 st.markdown("[RETURN to Council Member Stances overview](#commissioner-stances-heatgrid)")
 
+# Meeting Details table
+st.subheader("Meeting Details", anchor="meeting-details")
+
+# List of columns you want to display
+selected_columns = ['Date', 'Topics', 'Youtube link']
+# Create a new DataFrame with only the selected columns
+df_to_display = chart_df[selected_columns]
+
+# DEPRECATED 2025-08-16
+# st.dataframe(df_to_display) 
+# use st.table instead, to render markdown in table cells
+
+if st.checkbox("Show Meeting Details"):
+    st.table(df_to_display)
+
+st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
+
 # DEPRECATED - replaced by above 2 separate tables
 # display all columns using st.dataframe for horizontal scrolling
 # st.dataframe(stances_df)
-
 
 # # Planning Commission detailed activity highlights
 # DEPRECATED tbd if useful to retain a long-form bullet point narrative summary

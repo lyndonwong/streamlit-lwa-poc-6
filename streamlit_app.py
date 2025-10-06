@@ -130,10 +130,9 @@ with tab_investors:
     st_player("https://player.vimeo.com/video/1117612952")
 
 # Feedback on interpretive videos feature
-submit_feedback_widget("interpretive_videos")
+# submit_feedback_widget("interpretive_videos") # removed 10/6/2025 to simplify app UX
 
 # SUMMARY VISUALIZATIONS ON TOPICS, PROJECTS, COMMISSIONERS
-
 
 # PROJECT MAP
 # INTERACTIVE MAP of projects discussed
@@ -295,7 +294,7 @@ if st.checkbox("Show instructions for interactive map"):
 
 
 # Feedback on interactive map feature
-submit_feedback_widget("project_map")
+# submit_feedback_widget("project_map") # removed 10/6/2025 to simplify app UX
 
 # COMMISSIONER STANCES AND POSITIONS
 # Commissioners policy stances data frame
@@ -376,7 +375,7 @@ styled_stances_df = stances_summary_df.style.applymap(highlight_stances)
 st.dataframe(styled_stances_df)
 
 # Feedback on council member stances feature
-submit_feedback_widget("stances_overview")
+# submit_feedback_widget("stances_overview") # removed 10/6/2025 to simplify app UX
 
 # MEETING HIGHLIGHTS
 # BAR CHART WITH Meeting Highlights for 1H 2025
@@ -405,8 +404,6 @@ mtg_chart = alt.Chart(chart_df).mark_bar().encode(
 st.altair_chart(mtg_chart, use_container_width=True)
 
 st.markdown("[CLICK HERE for Meeting Details](#meeting-details)")
-
-
 
 # DEPRECATED 8/8/2025
 # Somewhat redundant with explainer video. Also a bug in the audio file prevents playback

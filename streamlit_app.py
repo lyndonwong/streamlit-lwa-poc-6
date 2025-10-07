@@ -95,7 +95,7 @@ st.logo("images/LWA-v2-square.png", size="large")
 st.title("Menlo Park City Council Recap")
 
 # Call near the top of the Streamlit layout
-feedback_sidebar()
+feedback_sidebar(city_name="Menlo Park")
 
 # decorative image of the town
 # st.image("images/Menlo_Park_960px.jpg", use_container_width=True) # TBD replace with high-level metrics or other value-add analytic summary

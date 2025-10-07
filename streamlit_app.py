@@ -14,6 +14,8 @@ from streamlit_player import st_player
 # add altair charting
 import altair as alt
 import requests
+from feedback_sidebar import feedback_sidebar
+
 
 # FUNCTIONS
 
@@ -91,6 +93,9 @@ st.set_page_config(layout="wide")
 st.logo("images/LWA-v2-square.png", size="large")    
 # st.image("images/LWA_demolab_1920x360px.png", use_container_width=True )
 st.title("Menlo Park City Council Recap")
+
+# Call near the top of the Streamlit layout
+feedback_sidebar(city_name="Menlo Park")
 
 # decorative image of the town
 # st.image("images/Menlo_Park_960px.jpg", use_container_width=True) # TBD replace with high-level metrics or other value-add analytic summary

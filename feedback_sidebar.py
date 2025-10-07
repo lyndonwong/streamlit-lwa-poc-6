@@ -1,57 +1,74 @@
 import streamlit as st
+import requests
 import datetime
 
-def feedback_sidebar():
+def feedback_sidebar(city_name: str):
+    """Reusable sidebar for collecting feedback from different city apps."""
+
     st.sidebar.markdown("---")
-    st.sidebar.markdown("### 💬 We’d love your feedback!")
+    st.sidebar.markdown(f"### 💬 Feedback for {city_name.title()}")
     st.sidebar.write(
-        "Help improve the VisiGov app by reporting bugs, "
-        "suggesting improvements, or signing up for future updates."
+        f"Help improve the {city_name.title()} recap! Report bugs, "
+        "suggest improvements, or sign up for future updates."
     )
 
-    # --- Bug & Suggestion Form ---
-    st.sidebar.markdown("#### 🪲 Report a Bug or Suggestion")
     feedback_type = st.sidebar.selectbox(
-        "What kind of feedback would you like to share?",
+        "Type of feedback:",
         ["Bug or data issue", "Feature suggestion", "Other comment"],
     )
 
     feedback_text = st.sidebar.text_area(
-        "Describe what you noticed or suggest:",
+        "Describe your feedback:",
         placeholder="Example: The project map didn’t load correctly...",
     )
 
-    # --- Optional Contact Info ---
-    contact = st.sidebar.text_input(
+    rating = st.sidebar.radio(
+        "How useful is this app so far?",
+        ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
+        horizontal=True,
+    )
+
+    contact_email = st.sidebar.text_input(
         "Your email (optional)",
         placeholder="you@example.com",
     )
 
-    # --- Submission Logic ---
-    if st.sidebar.button("📨 Submit Feedback"):
-        if feedback_text.strip() == "":
-            st.sidebar.warning("Please add a brief description before submitting.")
-        else:
-            # Append feedback to a local log file or Google Sheet later
-            timestamp = datetime.datetime.now().isoformat()
-            with open("user_feedback_log.txt", "a") as f:
-                f.write(
-                    f"{timestamp}\t{feedback_type}\t{feedback_text}\t{contact}\n"
-                )
-            st.sidebar.success("✅ Thank you! Your feedback has been recorded.")
-            st.sidebar.info(
-                "We appreciate your help in improving the app."
-            )
+    # Load secrets securely
+    try:
+        gas_url = st.secrets["feedback"]["gas_url"]
+        secret_token = st.secrets["feedback"]["token"]
+    except Exception:
+        st.sidebar.error("⚠️ Missing Google Apps Script credentials. Check secrets.toml or Streamlit Cloud settings.")
+        return
 
-    # --- External Form (optional fallback) ---
+    if st.sidebar.button("📨 Submit Feedback"):
+        if not feedback_text.strip():
+            st.sidebar.warning("Please enter some feedback before submitting.")
+        else:
+            payload = {
+                "city_name": city_name,      # 👈 added city name field
+                "feedback_type": feedback_type,
+                "feedback_text": feedback_text,
+                "rating": rating,
+                "contact_email": contact_email,
+                "token": secret_token,
+            }
+
+            try:
+                response = requests.post(gas_url, json=payload, timeout=5)
+                if response.status_code == 200 and "success" in response.text:
+                    st.sidebar.success("✅ Feedback sent successfully! Thank you.")
+                else:
+                    st.sidebar.error("⚠️ Could not send feedback. Try again later.")
+                    st.sidebar.caption(f"Response: {response.text}")
+            except Exception as e:
+                st.sidebar.error(f"Network error: {e}")
+
+    # Optional footer
     st.sidebar.markdown("---")
     st.sidebar.markdown(
-        "Prefer a form? [Submit feedback via Google Form](https://forms.gle/your-feedback-form)"
+        "Prefer a form? [Submit feedback via Google Form](https://link.lyndonwong.com/mp-council-dashboard-feedback)"
     )
-
-    # --- Contact and Follow-Up ---
-    st.sidebar.markdown("#### 📬 Stay in Touch")
     st.sidebar.markdown(
-        "Want updates about new features? "
-        "[Email us](mailto:team@visigov.app) or add your email above."
+        f"📬 Want updates? [Email us](mailto:team@example.tbd) or include your email above."
     )

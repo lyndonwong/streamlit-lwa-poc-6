@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import datetime
 
+
 def feedback_sidebar(city_name: str):
     """Reusable sidebar for collecting feedback from different city apps."""
 
@@ -70,5 +71,7 @@ def feedback_sidebar(city_name: str):
         "Prefer a form? [Submit feedback via Google Form](https://link.lyndonwong.com/mp-council-dashboard-feedback)"
     )
     st.sidebar.markdown(
-        f"📬 Want updates? [Email us](mailto:team@example.tbd) or include your email above."
+        f"📬 Want updates? Include your email above."
     )
+
+

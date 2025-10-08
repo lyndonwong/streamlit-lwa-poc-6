@@ -90,7 +90,17 @@ def submit_feedback_widget(context_label):
 # import streamlit.components.v1 as components
 
 st.set_page_config(layout="wide")
+
+st.info(
+    '''
+    :green_apple: This is an AI-assisted experiment to bring you closer to your local government.  
+
+    **Please share feedback** with the top left ":material/keyboard_double_arrow_right:" sidebar opener!
+    '''
+)
+
 st.logo("images/LWA-v2-square.png", size="large")    
+
 # st.image("images/LWA_demolab_1920x360px.png", use_container_width=True )
 st.title("Menlo Park City Council Recap")
 
@@ -489,5 +499,7 @@ st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
 
 # General Feedback
 st.divider()
-st.subheader("Please share your feedback")
-submit_feedback_widget("overall_experience")
+st.subheader(":statue_of_liberty: Have Feedback?")
+# submit_feedback_widget("overall_experience")
+
+st.markdown('**Share it** with the top left ":material/keyboard_double_arrow_right:" sidebar opener!')

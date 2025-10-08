@@ -497,8 +497,11 @@ st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
 # if st.checkbox("See Planning Commission 1H 2025 Activity Details"):
 #     st.markdown(markdown_content)
 
-# General Feedback
+# Footer section
 st.divider()
+
+st.link_button("Return to landing page", "https://lyndonwong.notion.site/menlo-park-city-council-recap", type="primary")
+
 st.subheader(":statue_of_liberty: Have Feedback?")
 # submit_feedback_widget("overall_experience")
 

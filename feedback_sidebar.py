@@ -7,15 +7,14 @@ def feedback_sidebar(city_name: str):
     """Reusable sidebar for collecting feedback from different city apps."""
 
     st.sidebar.markdown("---")
-    st.sidebar.markdown(f"### 💬 Feedback")
-    st.sidebar.write(
-        f"Help improve this {city_name.title()} recap! Report bugs, "
-        "suggest improvements, or sign up for future updates."
-    )
+    st.sidebar.markdown(f"### 💬 {city_name.title()} Feedback")
+#    st.sidebar.write(
+#        f"Please report issues and share suggestions."
+#    )
 
     feedback_type = st.sidebar.selectbox(
         "Type of feedback:",
-        ["Bug or data issue", "Feature suggestion", "Other comment"],
+        ["Data issue or bug", "Suggestion", "Other comment"],
     )
 
     feedback_text = st.sidebar.text_area(
@@ -24,7 +23,7 @@ def feedback_sidebar(city_name: str):
     )
 
     rating = st.sidebar.radio(
-        "How useful is this app so far?",
+        "How useful is this recap?",
         ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
         horizontal=True,
     )

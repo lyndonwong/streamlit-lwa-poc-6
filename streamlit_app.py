@@ -93,9 +93,9 @@ st.set_page_config(layout="wide")
 
 st.info(
     '''
-    :green_apple: This is an AI-assisted experiment to bring you closer to your local government.  
+    :green_apple: This is an AI-assisted experiment to help you quickly catch up with city council activity.  
 
-    **Please share feedback** with the top left ":material/keyboard_double_arrow_right:" sidebar opener!
+    **Please share any feedback** using the ":material/keyboard_double_arrow_right:" top left sidebar opener!
     '''
 )
 
@@ -499,10 +499,8 @@ st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
 
 # Footer section
 st.divider()
-
 st.link_button("Return to landing page", "https://lyndonwong.notion.site/menlo-park-city-council-recap", type="primary")
+st.subheader(":statue_of_liberty: Have comments?")
+st.markdown('**Share it** using the ":material/keyboard_double_arrow_right:" top left sidebar opener!')
 
-st.subheader(":statue_of_liberty: Have Feedback?")
-# submit_feedback_widget("overall_experience")
-
-st.markdown('**Share it** with the top left ":material/keyboard_double_arrow_right:" sidebar opener!')
+# submit_feedback_widget("overall_experience") # replaced by feedback_sidebar

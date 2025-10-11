@@ -12,21 +12,23 @@ def feedback_sidebar(city_name: str):
 #        f"Please report issues and share suggestions."
 #    )
 
-    feedback_type = st.sidebar.selectbox(
-        "Type of feedback:",
-        ["Data issue or bug", "Suggestion", "Other comment"],
-    )
+    # feedback_type = st.sidebar.selectbox(
+    #     "Type of feedback:",
+    #     ["Data issue or bug", "Suggestion", "Other comment"],
+    # )
+    feedback_type = "General"
 
     feedback_text = st.sidebar.text_area(
-        "Describe your feedback:",
+        "Suggestion, bug or comment:",
         placeholder="Example: The project map didn’t load correctly...",
     )
 
-    rating = st.sidebar.radio(
-        "How useful is this recap?",
-        ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
-        horizontal=True,
-    )
+    # rating = st.sidebar.radio(
+    #     "How useful is this recap?",
+    #     ["⭐", "⭐⭐", "⭐⭐⭐", "⭐⭐⭐⭐", "⭐⭐⭐⭐⭐"],
+    #     horizontal=True,
+    # )
+    rating = "null"
 
     contact_email = st.sidebar.text_input(
         "Your email (optional)",

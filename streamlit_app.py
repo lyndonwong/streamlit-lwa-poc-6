@@ -93,7 +93,7 @@ st.set_page_config(layout="wide")
 
 st.info(
     '''
-    :green_apple: This is an AI-assisted experiment to help you quickly catch up with city council activity.  
+    :green_apple: **This AI-assisted experiment helps you quickly catch up with city council activity** from Jan to Aug 2025.  
 
     **Please share any feedback** using the ":material/keyboard_double_arrow_right:" top left sidebar opener!
     '''
@@ -110,13 +110,6 @@ feedback_sidebar(city_name="Menlo Park")
 # decorative image of the town
 # st.image("images/Menlo_Park_960px.jpg", use_container_width=True) # TBD replace with high-level metrics or other value-add analytic summary
 
-# Short overview
-# [2025-08-25] TO DO: should modify to scan external .md file for this content, instead of hardcoding
-# [2025-09-01] Copied and lightly edited MPPC summary from LLM response
-st.markdown('''
-            ##### Overview of Council meetings 1H 2025:
-            A prominent theme across Menlo Park's City Council meetings is **housing development**, particularly the controversial proposal for **affordable housing on downtown parking lots**, which elicits significant public comment both in favor and opposition due to concerns about parking, business impact, and alternative sites like the Civic Center. Additionally, the council actively discusses **environmental and infrastructure issues**, including **climate action, flood control projects like Safer Bay, and updates to the Bayfront Recycled Water Facility**. **Fiscal matters, such as budget adoption, capital improvement plans, and aquatic center funding**, are also recurring topics, reflecting the city's financial planning and resource allocation. Finally, **transportation and community engagement** are consistently addressed, highlighting discussions around **safe routes, bike lanes, and the role of advisory bodies** like the Youth Advisory Committee. 
-            ''')
 
 # ANALYSES FROM VARIOUS PERSPECTIVES
 st.header("Interpretations")
@@ -146,6 +139,15 @@ with tab_investors:
 
 # Feedback on interpretive videos feature
 # submit_feedback_widget("interpretive_videos") # removed 10/6/2025 to simplify app UX
+
+# Short overview
+# [2025-08-25] TO DO: should modify to scan external .md file for this content, instead of hardcoding
+# [2025-09-01] Copied and lightly edited MPPC summary from LLM response
+st.markdown('''
+            ##### Overview of Council meetings 1H 2025:
+            A prominent theme across Menlo Park's City Council meetings is **housing development**, particularly the controversial proposal for **affordable housing on downtown parking lots**, which elicits significant public comment both in favor and opposition due to concerns about parking, business impact, and alternative sites like the Civic Center. Additionally, the council actively discusses **environmental and infrastructure issues**, including **climate action, flood control projects like Safer Bay, and updates to the Bayfront Recycled Water Facility**. **Fiscal matters, such as budget adoption, capital improvement plans, and aquatic center funding**, are also recurring topics, reflecting the city's financial planning and resource allocation. Finally, **transportation and community engagement** are consistently addressed, highlighting discussions around **safe routes, bike lanes, and the role of advisory bodies** like the Youth Advisory Committee. 
+            ''')
+
 
 # SUMMARY VISUALIZATIONS ON TOPICS, PROJECTS, COMMISSIONERS
 

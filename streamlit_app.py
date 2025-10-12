@@ -93,9 +93,9 @@ st.set_page_config(layout="wide")
 
 st.info(
     '''
-    :green_apple: **This AI-assisted experiment helps you quickly catch up with city council activity** from Jan to Aug 2025.  
+    :green_apple: **This AI-generated recap helps you quickly catch up with city council activity** from Jan through Aug 2025.  
 
-    **Please share any feedback** using the ":material/keyboard_double_arrow_right:" top left sidebar opener!
+    Given current limitations of AI, think of this app as a helpful guide for exploring local government activity — not a replacement for the official record. If you need the final word on any issue, please check the city’s published minutes and recordings.
     '''
 )
 
@@ -154,8 +154,8 @@ st.markdown('''
 # PROJECT MAP
 # INTERACTIVE MAP of projects discussed
 st.subheader("Project Map", anchor="project-map")
-st.write("Hover over the pins to see detailed project information. Click on a pin for a popup and to see the project name below.")
-st.markdown("[CLICK HERE FOR DETAILS on each project](#project-details)")
+st.write("Hover over map pins to see project information by location. Click on a pin for more details.")
+st.markdown("[CLICK HERE FOR TABLE of all projects](#project-details)")
 
 # Load the data from the uploaded CSV file
 # Ensure the CSV file 'MPPC_projects_1H2025_2025-08-06_map_source.csv' is available in the environment.
@@ -437,7 +437,7 @@ st.markdown("[CLICK HERE for Meeting Details](#meeting-details)")
 # INFORMATION TABLES WITH MORE DETAILS ON TOPICS, PROJECTS AND COMMISSIONERS
 
 # Key Projects table
-st.subheader("Project Details", anchor="project-details")
+st.subheader("Projects", anchor="project-details")
 
 #columns_to_show = ['Project', 'Address', 'Description', 'First Mention', 'Last Mention']
 # columns_to_show = ['project', 'address', 'description', 'earliest_mention_date', 'latest_mention_date', 'url'] #need to remove url column for now 9/2/2025.
@@ -445,25 +445,25 @@ columns_to_show = ['project', 'address', 'description', 'earliest_mention_date',
 
 # st.dataframe(df) # DEPRECATED 2025-08-16
 # use st.table instead, to show multi-row description field
-if st.checkbox("Show Project Details"):
+if st.checkbox("Open key projects table"):
     st.table(df[columns_to_show])
 
 st.markdown("[RETURN to Project Map](#project-map)")
 
 # COMMISSIONER SPECIFIC POSITIONS
 # display subset of columns using st.table for bulleted list in cells
-st.subheader("Stances Details", anchor="commissioner-specific-positions")
+st.subheader("Stances", anchor="commissioner-specific-positions")
 
 positions_view = ['Council Member', 'Key Positions']
 positions_list_df = stances_df[positions_view]
 
-if st.checkbox("Show Key Stances of each Council Member"):
+if st.checkbox("List key stances of each Council Member"):
     st.table(positions_list_df)
 
 st.markdown("[RETURN to Council Member Stances overview](#commissioner-stances-heatgrid)")
 
 # Meeting Details table
-st.subheader("Meeting Details", anchor="meeting-details")
+st.subheader("Meetings", anchor="meeting-details")
 
 # List of columns you want to display
 selected_columns = ['Date', 'Topics', 'Youtube link']
@@ -474,7 +474,7 @@ df_to_display = chart_df[selected_columns]
 # st.dataframe(df_to_display) 
 # use st.table instead, to render markdown in table cells
 
-if st.checkbox("Show Meeting Details"):
+if st.checkbox("Show topics by meeting date"):
     st.table(df_to_display)
 
 st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
@@ -502,7 +502,7 @@ st.markdown("[RETURN to Meeting Highlights Chart](#meeting-highlights)")
 # Footer section
 st.divider()
 st.link_button("Return to landing page", "https://lyndonwong.notion.site/menlo-park-city-council-recap", type="primary")
-st.subheader(":statue_of_liberty: Have comments?")
-st.markdown('**Share it** using the ":material/keyboard_double_arrow_right:" top left sidebar opener!')
+st.subheader(":statue_of_liberty: Got comments?")
+st.markdown('**Please share** using the ":material/keyboard_double_arrow_right:" top left sidebar opener!')
 
 # submit_feedback_widget("overall_experience") # replaced by feedback_sidebar

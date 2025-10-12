@@ -20,7 +20,7 @@ def feedback_sidebar(city_name: str):
 
     feedback_text = st.sidebar.text_area(
         "Suggestion, bug or comment:",
-        placeholder="Example: The project map didn’t load correctly...",
+        placeholder="Example: Could this recap include voting history...",
     )
 
     # rating = st.sidebar.radio(
@@ -36,7 +36,7 @@ def feedback_sidebar(city_name: str):
     )
 # CTA to join mailing list
     st.sidebar.markdown(
-        f"📬 Want updates? Include your email above."
+        f"📬 Open to questions re: your feedback? Please add your email above."
     )
 
     # Load secrets securely

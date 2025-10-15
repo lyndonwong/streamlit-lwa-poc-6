@@ -440,13 +440,25 @@ st.markdown("[CLICK HERE for Meeting Details](#meeting-details)")
 st.subheader("Projects", anchor="project-details")
 
 #columns_to_show = ['Project', 'Address', 'Description', 'First Mention', 'Last Mention']
-# columns_to_show = ['project', 'address', 'description', 'earliest_mention_date', 'latest_mention_date', 'url'] #need to remove url column for now 9/2/2025.
-columns_to_show = ['project', 'address', 'description', 'earliest_mention_date', 'latest_mention_date']
+# columns_to_show = ['project', 'address', 'description', 'earliest_mention_date', 'latest_mention_date'] #hide more columns if using st.table
+columns_to_show = ['project', 'address', 'description', 'earliest_mention_date', 'latest_mention_date', 'url'] #restore url column 10/15/2025.
 
 # st.dataframe(df) # DEPRECATED 2025-08-16
 # use st.table instead, to show multi-row description field
 if st.checkbox("Open key projects table"):
-    st.table(df[columns_to_show])
+    # st.table(df[columns_to_show])
+    st.dataframe(
+        df[columns_to_show],
+        column_config={
+            "url": st.column_config.LinkColumn(
+                "City project link",
+                # display_text="View details" #optional instead of showing url
+                help="Click to open the project webpage" # Optional hover tooltip
+            )
+        },
+        use_container_width=True, # ensures full-width display on mobile and desktop
+        # height=400 # optional: control visible height before scrolling
+        )
 
 st.markdown("[RETURN to Project Map](#project-map)")
 

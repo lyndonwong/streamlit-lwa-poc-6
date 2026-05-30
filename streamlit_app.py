@@ -388,7 +388,7 @@ def highlight_stances(val):
             return 'background-color: #FAD7A0; color: black;'   # pastel orange
     return ''
 
-styled_stances_df = stances_summary_df.style.applymap(highlight_stances)
+styled_stances_df = stances_summary_df.style.map(highlight_stances)
 st.dataframe(styled_stances_df)
 
 # Feedback on council member stances feature
